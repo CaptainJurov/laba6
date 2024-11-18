@@ -58,8 +58,7 @@ public:
     }
     friend std::istream& operator>>(std::istream& is, Коробка& источник) {
         std::string temp;
-        //is >> temp;
-        std::getline(std::cin, temp);
+        std::getline(is, temp);
         источник.get_First().str_to_stack(temp);
         источник.get_Second().str_to_stack(temp);
         return is;

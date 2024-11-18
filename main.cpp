@@ -58,7 +58,8 @@ public:
     }
     friend std::istream& operator>>(std::istream& is, Коробка& источник) {
         std::string temp;
-        is >> temp;
+        //is >> temp;
+        std::getline(std::cin, temp);
         источник.get_First().str_to_stack(temp);
         источник.get_Second().str_to_stack(temp);
         return is;
@@ -66,11 +67,14 @@ public:
 };
 
 int main() {
-    std::cout<<Colors::зачёрк<<"Вводи текс: ";
-    Коробка хз;
-    std::cin >> хз;
-    std::cout << Colors::reset;
-    std::cout << "Первый стак: " << Colors::green << Colors::bold << хз.get_First().get_str() << std::endl << Colors::reset;
-    std::cout << "Второй стак(с гласными): " << Colors::blue << Colors::bold << хз.get_Second().get_str() << std::endl << Colors::reset;
+    std::cout<<Colors::clear;
+    for (;;) {
+        std::cout<<Colors::зачёрк<<"Вводи текс: ";
+        Коробка хз;
+        std::cin>>хз;
+        std::cout << Colors::reset;
+        std::cout << "Первый стак: " << Colors::green << Colors::bold << хз.get_First().get_str() << std::endl << Colors::reset;
+        std::cout << "Второй стак(с гласными): " << Colors::blue << Colors::bold << хз.get_Second().get_str() << std::endl << std::endl << Colors::reset;
+    }
     return 0;
 }

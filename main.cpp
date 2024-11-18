@@ -28,6 +28,15 @@ struct Источник {
         }
         return temp;
     }
+    Источник reverse() {
+        Источник result;
+        std::stack<char> temps = Input;
+        while (!temps.empty()) {
+            result.Input.push(temps.top());
+            temps.pop();
+        }
+        return result;
+    }
 };
 
 struct Второй: Источник {
@@ -74,6 +83,9 @@ int main() {
         std::cout << Colors::reset;
         std::cout << "Первый стак: " << Colors::green << Colors::bold << хз.get_First().get_str() << std::endl << Colors::reset;
         std::cout << "Второй стак(с гласными): " << Colors::blue << Colors::bold << хз.get_Second().get_str() << std::endl << std::endl << Colors::reset;
+        std::cout << "Первый стак(reverse): " << Colors::green << Colors::bold << хз.get_First().reverse().get_str() << std::endl << Colors::reset;
+        std::cout << "Второй стак(с гласными(reverse)): " << Colors::blue << Colors::bold << хз.get_Second().reverse().get_str() << std::endl << std::endl << Colors::reset;
+        
     }
     return 0;
 }

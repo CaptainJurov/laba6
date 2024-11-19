@@ -4,7 +4,7 @@
 #include <stack>
 #include <string>
 #include "colors.h"
-const char glas[] = "aAeEiIoOuU";
+const char glas[] = "aAeEiIoOuUyY";
 bool match(char s) {
     for (auto i: glas) {
         if (s==i) {return true;}
@@ -48,9 +48,18 @@ struct Второй: Источник {
             }
         }
     }
-    Второй(Источник& gl): Источник() {
-        std::string str = gl.get_str();
-        str_to_stack(str);
+    void transfer(Источник& gl) {
+        std::string first;
+        std::string second;
+        while (!gl.Input.empty()) {
+            if (match(gl.Input.top())) {
+                second.push_back(gl.Input.top());
+            }
+            else {first.push_back(gl.Input.top());}
+            gl.Input.pop();
+        }
+        gl.str_to_stack(first);
+        str_to_stack(second);
     }
 };
 
@@ -68,17 +77,8 @@ public:
     friend std::istream& operator>>(std::istream& is, Коробка& источник) {
         std::string temp;
         std::getline(is, temp);
-        Источник first;
-        first.str_to_stack(temp);
-        std::string firsts;
-        std::string second;
-        while (!first.Input.empty()) {
-            if (match(first.Input.top())) {second.push_back(first.Input.top());}
-            else {firsts.push_back(first.Input.top());}
-            first.Input.pop();
-        }
-        источник.get_First().str_to_stack(firsts);
-        источник.get_Second().str_to_stack(second);
+        источник.get_First().str_to_stack(temp);
+        источник.get_Second().transfer(источник.get_First());
         return is;
     }
 };

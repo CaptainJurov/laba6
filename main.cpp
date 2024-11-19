@@ -68,8 +68,17 @@ public:
     friend std::istream& operator>>(std::istream& is, Коробка& источник) {
         std::string temp;
         std::getline(is, temp);
-        источник.get_First().str_to_stack(temp);
-        источник.get_Second().str_to_stack(temp);
+        Источник first;
+        first.str_to_stack(temp);
+        std::string firsts;
+        std::string second;
+        while (!first.Input.empty()) {
+            if (match(first.Input.top())) {second.push_back(first.Input.top());}
+            else {firsts.push_back(first.Input.top());}
+            first.Input.pop();
+        }
+        источник.get_First().str_to_stack(firsts);
+        источник.get_Second().str_to_stack(second);
         return is;
     }
 };
@@ -85,7 +94,6 @@ int main() {
         std::cout << "Второй стак(с гласными): " << Colors::blue << Colors::bold << хз.get_Second().get_str() << std::endl << std::endl << Colors::reset;
         std::cout << "Первый стак(reverse): " << Colors::green << Colors::bold << хз.get_First().reverse().get_str() << std::endl << Colors::reset;
         std::cout << "Второй стак(с гласными(reverse)): " << Colors::blue << Colors::bold << хз.get_Second().reverse().get_str() << std::endl << std::endl << Colors::reset;
-        
     }
     return 0;
 }

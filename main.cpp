@@ -1,7 +1,7 @@
 #include <iostream>
 #include <istream>
 #include <ostream>
-#include <stack>
+#include <queue>
 #include <string>
 #include "colors.h"
 const char glas[] = "aAeEiIoOuUyY";
@@ -12,36 +12,27 @@ bool match(char s) {
     return false;
 } 
 struct Источник {
-    std::stack<char> Input;
+    std::queue<char> Input;
     Источник () {}
-    virtual void str_to_stack(std::string& str) {
+    virtual void str_to_queue(std::string& str) {
         for (auto i: str) {
             Input.push(i);
         }
     }
     std::string get_str() {
         std::string temp;
-        std::stack<char> temps = Input;
-        while (!temps.empty()) {
-            temp.push_back(temps.top());
-            temps.pop();
+        std::queue<char> tempq = Input;
+        while (!tempq.empty()) {
+            temp.push_back(tempq.front());
+            tempq.pop();
         }
         return temp;
-    }
-    Источник reverse() {
-        Источник result;
-        std::stack<char> temps = Input;
-        while (!temps.empty()) {
-            result.Input.push(temps.top());
-            temps.pop();
-        }
-        return result;
     }
 };
 
 struct Второй: Источник {
     Второй(): Источник() {}
-    void str_to_stack(std::string& str) override {
+    void str_to_queue(std::string& str) override {
         for (auto i: str) {
             if (match(i)) {
                 Input.push(i);
@@ -52,14 +43,14 @@ struct Второй: Источник {
         std::string first;
         std::string second;
         while (!gl.Input.empty()) {
-            if (match(gl.Input.top())) {
-                second.push_back(gl.Input.top());
+            if (match(gl.Input.front())) {
+                second.push_back(gl.Input.front());
             }
-            else {first.push_back(gl.Input.top());}
+            else {first.push_back(gl.Input.front());}
             gl.Input.pop();
         }
-        gl.str_to_stack(first);
-        str_to_stack(second);
+        gl.str_to_queue(first);
+        str_to_queue(second);
     }
 };
 
@@ -77,7 +68,7 @@ public:
     friend std::istream& operator>>(std::istream& is, Коробка& источник) {
         std::string temp;
         std::getline(is, temp);
-        источник.get_First().str_to_stack(temp);
+        источник.get_First().str_to_queue(temp);
         источник.get_Second().transfer(источник.get_First());
         return is;
     }
@@ -92,8 +83,6 @@ int main() {
         std::cout << Colors::reset;
         std::cout << "Первый стак: " << Colors::green << Colors::bold << хз.get_First().get_str() << std::endl << Colors::reset;
         std::cout << "Второй стак(с гласными): " << Colors::blue << Colors::bold << хз.get_Second().get_str() << std::endl << std::endl << Colors::reset;
-        std::cout << "Первый стак(reverse): " << Colors::green << Colors::bold << хз.get_First().reverse().get_str() << std::endl << Colors::reset;
-        std::cout << "Второй стак(с гласными(reverse)): " << Colors::blue << Colors::bold << хз.get_Second().reverse().get_str() << std::endl << std::endl << Colors::reset;
     }
     return 0;
 }
